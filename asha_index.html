@@ -1,0 +1,484 @@
+<style>
+  :root {
+    --ink: #EDE3D3;
+    --ground: #17120F;
+    --ground-raise: #211811;
+    --ground-raise-2: #2A1F16;
+    --ember: #D97A3D;
+    --ember-deep: #9C4A22;
+    --line: #3E3125;
+    --muted: #AC9C87;
+    --shadow: rgba(0,0,0,0.5);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "Bahnschrift", "Segoe UI Semibold", "Segoe UI", Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: "Rockwell", "Roboto Slab", Georgia, serif;
+    font-weight: 700;
+    text-wrap: balance;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  .label {
+    font-family: "Consolas", "SF Mono", Menlo, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ember);
+  }
+
+  a { color: inherit; }
+  .rule { border: none; border-top: 1px solid var(--line); }
+
+  /* ---------- Nav ---------- */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.1rem clamp(1.25rem, 4vw, 3.5rem);
+    background: color-mix(in srgb, var(--ground) 90%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-family: "Rockwell", "Roboto Slab", Georgia, serif;
+    font-size: 1.15rem;
+    letter-spacing: 0.01em;
+  }
+  .brand-mark { width: 26px; height: 26px; flex-shrink: 0; }
+  .nav-links {
+    display: flex;
+    gap: clamp(1rem, 2.5vw, 2.2rem);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 0.9rem;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--muted);
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+    transition: color .2s ease, border-color .2s ease;
+  }
+  .nav-links a:hover, .nav-links a:focus-visible { color: var(--ink); border-color: var(--ember); }
+  @media (max-width: 720px) { .nav-links { display: none; } }
+
+  section {
+    position: relative;
+    padding: clamp(3rem, 8vw, 6rem) clamp(1.25rem, 4vw, 3.5rem);
+    max-width: 1140px;
+    margin: 0 auto;
+  }
+  .sheet-tag { position: absolute; top: 1.2rem; right: clamp(1.25rem, 4vw, 3.5rem); }
+
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    padding-top: clamp(4rem, 11vw, 7.5rem);
+    position: relative;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+  }
+  .ember-glow {
+    position: absolute;
+    inset: -10% -10% auto -10%;
+    height: 130%;
+    background:
+      radial-gradient(ellipse 55% 40% at 50% 15%, color-mix(in srgb, var(--ember) 26%, transparent), transparent 70%),
+      radial-gradient(ellipse 40% 30% at 30% 40%, color-mix(in srgb, var(--ember-deep) 20%, transparent), transparent 70%);
+    filter: blur(10px);
+    animation: glow 9s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+  @keyframes glow {
+    0%, 100% { opacity: 0.75; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(8px); }
+  }
+  @media (prefers-reduced-motion: reduce) { .ember-glow { animation: none; } }
+
+  .hero > * { position: relative; z-index: 1; }
+  .hero h1 {
+    font-size: clamp(2.6rem, 6.5vw, 4.4rem);
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+  }
+  .hero .amp { color: var(--ember); }
+  .hero p.lede {
+    margin-top: 1.3rem;
+    max-width: 46ch;
+    color: var(--muted);
+    font-size: 1.1rem;
+  }
+  .hero-cta { margin-top: 2.2rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.6rem;
+    border-radius: 2px;
+    font-size: 0.92rem;
+    text-decoration: none;
+    border: 1px solid var(--ember);
+    transition: background .2s ease, color .2s ease, transform .15s ease;
+    cursor: pointer;
+    background: none;
+    font-family: inherit;
+    color: var(--ink);
+  }
+  .btn-primary { background: var(--ember); border-color: var(--ember); color: #17120F; font-weight: 600; }
+  .btn-primary:hover { background: #E9915A; transform: translateY(-1px); }
+  .btn-ghost { border-color: var(--line); color: var(--muted); }
+  .btn-ghost:hover { border-color: var(--ember); color: var(--ember); }
+
+  .hero-embers { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+  .hero-embers span {
+    position: absolute;
+    bottom: 10%;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--ember);
+    box-shadow: 0 0 6px 1px var(--ember);
+    animation: rise 6s linear infinite;
+    opacity: 0;
+  }
+  @keyframes rise {
+    0% { opacity: 0; transform: translateY(0) translateX(0); }
+    10% { opacity: 0.9; }
+    90% { opacity: 0.4; }
+    100% { opacity: 0; transform: translateY(-220px) translateX(var(--drift, 10px)); }
+  }
+  @media (prefers-reduced-motion: reduce) { .hero-embers span { animation: none; opacity: 0; } }
+
+  /* ---------- Menu ---------- */
+  .menu-intro { max-width: 60ch; color: var(--muted); margin-top: 0.7rem; }
+  .menu-categories { margin-top: 2.5rem; display: grid; gap: 3rem; }
+  .menu-category h3 {
+    font-size: 1.5rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+  }
+  .menu-category h3 .label { font-size: 0.68rem; }
+  .menu-list { list-style: none; margin: 1.3rem 0 0; padding: 0; display: grid; gap: 0.9rem; }
+  .menu-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+  .menu-item .name { font-size: 1.02rem; }
+  .menu-item .name .tag { font-size: 0.75rem; color: var(--muted); font-style: italic; }
+  .menu-item .leader {
+    flex: 1;
+    border-bottom: 1px dotted var(--line);
+    margin-bottom: 0.35rem;
+    min-width: 1.5rem;
+  }
+  .menu-item .price {
+    font-family: "Consolas", monospace;
+    font-variant-numeric: tabular-nums;
+    color: var(--ember);
+    font-size: 0.98rem;
+    white-space: nowrap;
+  }
+  .menu-item .desc { flex-basis: 100%; color: var(--muted); font-size: 0.88rem; margin-top: -0.4rem; }
+
+  /* ---------- About ---------- */
+  .about-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+  @media (max-width: 820px) { .about-grid { grid-template-columns: 1fr; } }
+  .about-grid p { color: var(--muted); font-size: 1.02rem; }
+  .about-grid p + p { margin-top: 1rem; }
+  .facts { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .fact { background: var(--ground); padding: 1.4rem 1.6rem; }
+  .fact .label { display: block; margin-bottom: 0.4rem; }
+  .fact strong { font-family: "Rockwell", Georgia, serif; font-size: 1.15rem; }
+
+  /* ---------- Gallery & Contact ---------- */
+  .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.4rem; margin-top: 2.2rem; }
+  @media (max-width: 700px) { .gallery-grid { grid-template-columns: 1fr; } }
+  .plate { border: 1px solid var(--line); background: var(--ground-raise); padding: 1rem; transition: border-color .25s ease, transform .25s ease; }
+  .plate:hover { border-color: var(--ember); transform: translateY(-3px); }
+  .photo-slot {
+    aspect-ratio: 4 / 3;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    border: 1px dashed var(--line);
+    color: var(--muted);
+    text-align: center;
+    padding: 1rem;
+  }
+  .photo-slot svg { width: 30px; height: 30px; opacity: 0.7; }
+  .photo-slot .slot-label { font-size: 0.78rem; }
+  .plate-caption { margin-top: 0.8rem; font-size: 0.92rem; color: var(--muted); font-style: italic; }
+
+  .contact-wrap { margin-top: 3.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4rem); }
+  @media (max-width: 820px) { .contact-wrap { grid-template-columns: 1fr; } }
+  .contact-wrap dl { display: grid; gap: 1.1rem; margin: 1.4rem 0 0; }
+  .contact-wrap dd { margin: 0; font-size: 1rem; }
+  .contact-wrap dd.placeholder { color: var(--muted); font-style: italic; }
+  .hours-table { width: 100%; border-collapse: collapse; margin-top: 1.4rem; }
+  .hours-table td { padding: 0.5rem 0; border-top: 1px solid var(--line); font-size: 0.95rem; }
+  .hours-table td:last-child { text-align: right; font-family: "Consolas", monospace; font-variant-numeric: tabular-nums; color: var(--ember); }
+
+  footer {
+    padding: 2.2rem clamp(1.25rem, 4vw, 3.5rem);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.8rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.85rem; color: var(--muted);
+    max-width: 1140px; margin: 0 auto;
+  }
+</style>
+
+<nav class="nav">
+  <div class="brand">
+    <svg class="brand-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M16 4c3 4 5 7 5 10a5 5 0 1 1-10 0c0-3 2-6 5-10z" stroke="var(--ember)" stroke-width="1.6" stroke-linejoin="round"/>
+      <path d="M11 26h10" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+    Asha Restaurant
+  </div>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#gallery-contact">Gallery &amp; Contact</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <section id="home" class="hero">
+    <div class="ember-glow"></div>
+    <div class="hero-embers">
+      <span style="left:20%; animation-delay:0s; --drift:14px;"></span>
+      <span style="left:38%; animation-delay:1.4s; --drift:-10px;"></span>
+      <span style="left:55%; animation-delay:2.6s; --drift:8px;"></span>
+      <span style="left:70%; animation-delay:0.8s; --drift:-16px;"></span>
+      <span style="left:85%; animation-delay:3.4s; --drift:6px;"></span>
+    </div>
+    <span class="label">Wood-Fired Kitchen &middot; Arusha</span>
+    <h1 style="margin-top:0.8rem;">Asha <span class="amp">Restaurant</span></h1>
+    <p class="lede">Live-fire cooking and East African-inspired plates, built for sharing at one long table. Smoke, char, and seasonal produce, every night.</p>
+    <div class="hero-cta">
+      <a href="#menu" class="btn btn-primary">View the menu</a>
+      <a href="#gallery-contact" class="btn btn-ghost">Reserve a table</a>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <section id="menu">
+    <span class="sheet-tag label">The Menu</span>
+    <h2 style="font-size: clamp(1.8rem, 3.5vw, 2.4rem);">Cooked over open flame.</h2>
+    <p class="menu-intro">A short, seasonal menu built around the fire pit and grill. Ask your server about tonight's changes &mdash; produce comes from the market that morning.</p>
+
+    <div class="menu-categories">
+      <div class="menu-category reveal">
+        <h3>Starters <span class="label">To Share</span></h3>
+        <ul class="menu-list">
+          <li class="menu-item">
+            <span class="name">Grilled Corn, Chili &amp; Lime Butter</span>
+            <span class="leader"></span>
+            <span class="price">TZS 8,000</span>
+          </li>
+          <li class="menu-item">
+            <span class="name">Smoked Tomato &amp; Coconut Soup</span>
+            <span class="leader"></span>
+            <span class="price">TZS 9,500</span>
+          </li>
+          <li class="menu-item">
+            <span class="name">Charred Okra, Peanut, Lime <span class="tag">(v)</span></span>
+            <span class="leader"></span>
+            <span class="price">TZS 10,000</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="menu-category reveal">
+        <h3>Mains &amp; Grill <span class="label">From the Fire</span></h3>
+        <ul class="menu-list">
+          <li class="menu-item">
+            <span class="name">Whole Fire-Roasted Tilapia</span>
+            <span class="leader"></span>
+            <span class="price">TZS 24,000</span>
+          </li>
+          <li class="menu-item">
+            <span class="name">Nyama Choma Platter, Mixed Grill</span>
+            <span class="leader"></span>
+            <span class="price">TZS 32,000</span>
+            <span class="desc">Beef, chicken, and boerewors, served with kachumbari.</span>
+          </li>
+          <li class="menu-item">
+            <span class="name">Slow-Smoked Goat Shoulder</span>
+            <span class="leader"></span>
+            <span class="price">TZS 28,000</span>
+          </li>
+          <li class="menu-item">
+            <span class="name">Root Vegetable &amp; Groundnut Stew <span class="tag">(v)</span></span>
+            <span class="leader"></span>
+            <span class="price">TZS 18,000</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="menu-category reveal">
+        <h3>Dessert <span class="label">To Finish</span></h3>
+        <ul class="menu-list">
+          <li class="menu-item">
+            <span class="name">Banana Fritters, Spiced Honey</span>
+            <span class="leader"></span>
+            <span class="price">TZS 8,000</span>
+          </li>
+          <li class="menu-item">
+            <span class="name">Coconut Rice Pudding</span>
+            <span class="leader"></span>
+            <span class="price">TZS 7,500</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="menu-category reveal">
+        <h3>Drinks <span class="label">Bar</span></h3>
+        <ul class="menu-list">
+          <li class="menu-item">
+            <span class="name">Hibiscus &amp; Ginger Cooler</span>
+            <span class="leader"></span>
+            <span class="price">TZS 5,000</span>
+          </li>
+          <li class="menu-item">
+            <span class="name">House Red / White, glass</span>
+            <span class="leader"></span>
+            <span class="price">TZS 12,000</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <section id="about">
+    <span class="sheet-tag label">Our Story</span>
+    <div class="about-grid reveal">
+      <div>
+        <h2 style="font-size: clamp(1.8rem, 3.5vw, 2.4rem);">One fire, one table, whoever's hungry.</h2>
+        <p style="margin-top:1.2rem;">Asha Restaurant started as a single fire pit and a borrowed grill. The idea stayed simple: cook everything over open flame, source what's in season, and put it all on the table to share.</p>
+        <p>The kitchen changes with the market &mdash; some nights it's tilapia straight off the coast, other nights it's whatever the garden gave up that morning. What doesn't change is the fire.</p>
+      </div>
+      <div class="facts">
+        <div class="fact"><span class="label">Est.</span><strong>2024</strong></div>
+        <div class="fact"><span class="label">Kitchen</span><strong>Open-flame only</strong></div>
+        <div class="fact"><span class="label">Menu</span><strong>Changes weekly</strong></div>
+        <div class="fact"><span class="label">Seating</span><strong>Communal &amp; private</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <section id="gallery-contact">
+    <span class="sheet-tag label">Visit</span>
+    <h2 style="font-size: clamp(1.8rem, 3.5vw, 2.4rem);">Gallery &amp; contact.</h2>
+    <p style="color: var(--muted); max-width: 55ch; margin-top: 0.8rem;">Four slots reserved for photos of the dining room and the fire pit &mdash; drop them in once shot, same layout, no changes needed.</p>
+
+    <div class="gallery-grid">
+      <div class="plate reveal">
+        <div class="photo-slot">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="5" width="20" height="15" rx="1" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12.5" r="3.4" stroke="currentColor" stroke-width="1.4"/><path d="M8 5 L9.2 3 H14.8 L16 5" stroke="currentColor" stroke-width="1.4"/></svg>
+          <span class="slot-label">Add photo</span>
+        </div>
+        <div class="plate-caption">[The fire pit]</div>
+      </div>
+      <div class="plate reveal">
+        <div class="photo-slot">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="5" width="20" height="15" rx="1" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12.5" r="3.4" stroke="currentColor" stroke-width="1.4"/><path d="M8 5 L9.2 3 H14.8 L16 5" stroke="currentColor" stroke-width="1.4"/></svg>
+          <span class="slot-label">Add photo</span>
+        </div>
+        <div class="plate-caption">[Nyama choma platter]</div>
+      </div>
+      <div class="plate reveal">
+        <div class="photo-slot">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="5" width="20" height="15" rx="1" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12.5" r="3.4" stroke="currentColor" stroke-width="1.4"/><path d="M8 5 L9.2 3 H14.8 L16 5" stroke="currentColor" stroke-width="1.4"/></svg>
+          <span class="slot-label">Add photo</span>
+        </div>
+        <div class="plate-caption">[The communal table]</div>
+      </div>
+      <div class="plate reveal">
+        <div class="photo-slot">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="5" width="20" height="15" rx="1" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12.5" r="3.4" stroke="currentColor" stroke-width="1.4"/><path d="M8 5 L9.2 3 H14.8 L16 5" stroke="currentColor" stroke-width="1.4"/></svg>
+          <span class="slot-label">Add photo</span>
+        </div>
+        <div class="plate-caption">[Evening service]</div>
+      </div>
+    </div>
+
+    <div class="contact-wrap">
+      <div class="reveal">
+        <h3 style="font-size:1.3rem;">Find us</h3>
+        <dl>
+          <div><dt class="label">Address</dt><dd class="placeholder">[Add street address, Arusha]</dd></div>
+          <div><dt class="label">Phone</dt><dd class="placeholder">[Add reservation phone number]</dd></div>
+          <div><dt class="label">Email</dt><dd class="placeholder">[Add booking email]</dd></div>
+        </dl>
+      </div>
+      <div class="reveal">
+        <h3 style="font-size:1.3rem;">Hours</h3>
+        <table class="hours-table">
+          <tr><td>Tuesday &ndash; Thursday</td><td>17:00 &ndash; 22:00</td></tr>
+          <tr><td>Friday &ndash; Saturday</td><td>17:00 &ndash; 23:30</td></tr>
+          <tr><td>Sunday</td><td>12:00 &ndash; 21:00</td></tr>
+          <tr><td>Monday</td><td>Closed</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>&copy; 2026 Asha Restaurant.</span>
+  <span>Wood-fired &middot; Seasonal &middot; Shared</span>
+</footer>
+
+<script>
+  var els = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    els.forEach(function(el){ io.observe(el); });
+  } else {
+    els.forEach(function(el){ el.classList.add('in'); });
+  }
+</script>
